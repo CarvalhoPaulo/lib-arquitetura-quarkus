@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.filter;
+package br.com.familyfinance.arquitetura.infra.filter;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -24,10 +24,10 @@ public class RequestLoggingFilter implements ContainerRequestFilter {
         log.debug("Headers: {}", headers);
         log.debug("Cookies: {}", cookies);
 
-        if (requestContext.hasEntity()) {
-            String body = readBody(requestContext);
-            log.debug("Request Body: {}", body);
-        }
+//        if (requestContext.hasEntity()) {
+//            String body = readBody(requestContext);
+//            log.debug("Request Body: {}", body);
+//        }
     }
 
     private String readBody(ContainerRequestContext context) throws IOException {

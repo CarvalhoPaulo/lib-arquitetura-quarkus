@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.interceptor;
+package br.com.familyfinance.arquitetura.infra.interceptor;
 
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.ext.WriterInterceptor;

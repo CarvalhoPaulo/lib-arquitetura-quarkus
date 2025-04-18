@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.exception;
+package br.com.familyfinance.arquitetura.core.exception;
 
 import lombok.Getter;
 

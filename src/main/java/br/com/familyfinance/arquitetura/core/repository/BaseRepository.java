@@ -1,13 +1,14 @@
 package br.com.familyfinance.arquitetura.core.repository;
 
+import br.com.familyfinance.arquitetura.core.Model;
 import io.smallrye.mutiny.Uni;
 
-public interface BaseRepository<MODEL, ID> {
-    Uni<MODEL> findById(ID id);
+public interface BaseRepository<MODEL extends Model<ID>, ID> {
+    Uni<MODEL> buscarPorId(ID id);
 
-    Uni<MODEL> insert(MODEL usuario);
+    Uni<MODEL> inserir(MODEL usuario);
 
-    Uni<MODEL> update(MODEL usuario);
+    Uni<MODEL> alterar(MODEL usuario);
 
-    void delete(MODEL usuario);
+    Uni<Void> excluir(MODEL usuario);
 }

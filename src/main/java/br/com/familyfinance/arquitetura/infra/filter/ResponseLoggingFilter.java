@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.filter;
+package br.com.familyfinance.arquitetura.infra.filter;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;

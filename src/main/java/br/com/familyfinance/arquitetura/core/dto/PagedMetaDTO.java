@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.dto;
+package br.com.familyfinance.arquitetura.core.dto;
 
 import lombok.Builder;
 import lombok.Getter;
