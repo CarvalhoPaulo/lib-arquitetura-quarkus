@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class BusinessException extends Exception {
     private ErrorCodeEnum code;
+    private String details;
     private static MessageProvider messageProvider;
 
     public BusinessException(ErrorCodeEnum code) {
@@ -12,9 +13,21 @@ public class BusinessException extends Exception {
         this.code = code;
     }
 
+    public BusinessException(ErrorCodeEnum code, String details) {
+        super(obtemMensagem(code));
+        this.code = code;
+        this.details = details;
+    }
+
     public BusinessException(ErrorCodeEnum code, Throwable cause) {
         super(obtemMensagem(code), cause);
         this.code = code;
+    }
+
+    public BusinessException(ErrorCodeEnum code, String details, Throwable cause) {
+        super(obtemMensagem(code), cause);
+        this.code = code;
+        this.details = details;
     }
 
 

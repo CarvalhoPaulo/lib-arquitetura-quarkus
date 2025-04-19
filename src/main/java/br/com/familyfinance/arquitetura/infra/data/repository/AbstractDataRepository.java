@@ -1,6 +1,8 @@
 package br.com.familyfinance.arquitetura.infra.data.repository;
 
 import br.com.familyfinance.arquitetura.core.Model;
+import br.com.familyfinance.arquitetura.core.exception.ArquiteturaErrorCodeEnum;
+import br.com.familyfinance.arquitetura.core.exception.BusinessException;
 import br.com.familyfinance.arquitetura.core.mapper.AbstractModelMapper;
 import br.com.familyfinance.arquitetura.core.repository.BaseRepository;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
@@ -32,6 +34,10 @@ public abstract class AbstractDataRepository<MODEL extends Model<ID>, DATA, ID>
     public Uni<MODEL> alterar(MODEL model) {
         return findById(model.getId())
                 .onItem()
+                .ifNull()
+                .failWith(() -> new BusinessException(ArquiteturaErrorCodeEnum.RECURSO_NAO_ENCONTRADO))
+                .onItem()
+                .ifNotNull()
                 .transformToUni(data -> persist(this.getMapper().mergeData(model, data)))
                 .onItem()
                 .transform(this.getMapper()::toModel);

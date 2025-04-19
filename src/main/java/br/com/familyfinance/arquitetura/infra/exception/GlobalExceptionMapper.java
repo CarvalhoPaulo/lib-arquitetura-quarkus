@@ -20,8 +20,11 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(Throwable exception) {
-        if (exception.getCause() instanceof BusinessException) {
+        if (exception instanceof BusinessException) {
             return toResponse((BusinessException) exception);
+        }
+        if (exception.getCause() instanceof BusinessException) {
+            return toResponse((BusinessException) exception.getCause());
         }
         log.error(exception.getMessage(), exception);
 
@@ -52,7 +55,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
                         .errors(Collections.singletonList(ErrorDTO.builder()
                                 .code(exception.getCode().getCodigo())
                                 .message(exception.getMessage())
-                                .details(Arrays.toString(exception.getStackTrace()))
+                                .details(exception.getDetails())
                                 .build()))
                         .meta(MetaDTO.of(LocalDateTime.now()))
                         .build())

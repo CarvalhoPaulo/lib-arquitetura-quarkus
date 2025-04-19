@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 public enum ArquiteturaErrorCodeEnum implements ErrorCodeEnum {
     ERRO_INTERNO("ARQ0001", "Erro interno.", Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()),
-    TOKEN_INVALIDO("ARQ0002", "Token inválido.");
+    TOKEN_INVALIDO("ARQ0002", "Token inválido."),
+    RECURSO_NAO_ENCONTRADO("ARQ0003", "Recurso não encontrado.");
 
     private final String codigo;
     private final String message;
