@@ -4,34 +4,34 @@ import lombok.Getter;
 
 @Getter
 public class BusinessException extends Exception {
-    private ErrorCode code;
+    private final BusinessErrorCode code;
     private String details;
-    private static MessageProvider messageProvider;
+    private static BusinessMessageProvider messageProvider;
 
-    public BusinessException(ErrorCode code) {
+    public BusinessException(BusinessErrorCode code) {
         super(obtemMensagem(code));
         this.code = code;
     }
 
-    public BusinessException(ErrorCode code, String details) {
+    public BusinessException(BusinessErrorCode code, String details) {
         super(obtemMensagem(code));
         this.code = code;
         this.details = details;
     }
 
-    public BusinessException(ErrorCode code, Throwable cause) {
+    public BusinessException(BusinessErrorCode code, Throwable cause) {
         super(obtemMensagem(code), cause);
         this.code = code;
     }
 
-    public BusinessException(ErrorCode code, String details, Throwable cause) {
+    public BusinessException(BusinessErrorCode code, String details, Throwable cause) {
         super(obtemMensagem(code), cause);
         this.code = code;
         this.details = details;
     }
 
 
-    private static String obtemMensagem(ErrorCode code) {
+    private static String obtemMensagem(BusinessErrorCode code) {
         if (messageProvider != null) {
             return messageProvider.getMessage(code.getCodigo());
         } else {
@@ -39,7 +39,7 @@ public class BusinessException extends Exception {
         }
     }
 
-    public static void configMessageProvider(MessageProvider messageProvider) {
+    public static void configMessageProvider(BusinessMessageProvider messageProvider) {
         BusinessException.messageProvider = messageProvider;
     }
 }

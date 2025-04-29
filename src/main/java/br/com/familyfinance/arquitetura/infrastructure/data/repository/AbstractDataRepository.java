@@ -3,8 +3,6 @@ package br.com.familyfinance.arquitetura.infrastructure.data.repository;
 import br.com.familyfinance.arquitetura.application.exception.ApplicationErrorCodeEnum;
 import br.com.familyfinance.arquitetura.application.exception.ApplicationException;
 import br.com.familyfinance.arquitetura.domain.model.Model;
-import br.com.familyfinance.arquitetura.domain.exception.ArquiteturaErrorCodeEnum;
-import br.com.familyfinance.arquitetura.domain.exception.BusinessException;
 import br.com.familyfinance.arquitetura.infrastructure.mapper.AbstractModelMapper;
 import br.com.familyfinance.arquitetura.domain.repository.BaseRepository;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;

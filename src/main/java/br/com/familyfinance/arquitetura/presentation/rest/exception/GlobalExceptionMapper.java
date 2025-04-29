@@ -5,7 +5,6 @@ import br.com.familyfinance.arquitetura.application.dto.MetaDTO;
 import br.com.familyfinance.arquitetura.application.dto.ResponseDTO;
 import br.com.familyfinance.arquitetura.application.exception.ApplicationErrorCodeEnum;
 import br.com.familyfinance.arquitetura.application.exception.ApplicationException;
-import br.com.familyfinance.arquitetura.domain.exception.ArquiteturaErrorCodeEnum;
 import br.com.familyfinance.arquitetura.domain.exception.BusinessException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
