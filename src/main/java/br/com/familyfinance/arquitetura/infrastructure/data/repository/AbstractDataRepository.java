@@ -1,10 +1,10 @@
 package br.com.familyfinance.arquitetura.infrastructure.data.repository;
 
-import br.com.familyfinance.arquitetura.application.exception.ApplicationErrorCodeEnum;
-import br.com.familyfinance.arquitetura.application.exception.ApplicationException;
-import br.com.familyfinance.arquitetura.domain.model.Model;
-import br.com.familyfinance.arquitetura.infrastructure.mapper.AbstractModelMapper;
 import br.com.familyfinance.arquitetura.domain.repository.BaseRepository;
+import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationErrorCodeEnum;
+import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationException;
+import br.dev.paulocarvalho.arquitetura.domain.mapper.AbstractModelMapper;
+import br.dev.paulocarvalho.arquitetura.domain.model.Model;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
 import io.smallrye.mutiny.Uni;
 import jakarta.transaction.Transactional;

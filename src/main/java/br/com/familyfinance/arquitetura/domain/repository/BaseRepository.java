@@ -1,6 +1,6 @@
 package br.com.familyfinance.arquitetura.domain.repository;
 
-import br.com.familyfinance.arquitetura.domain.model.Model;
+import br.dev.paulocarvalho.arquitetura.domain.model.Model;
 import io.smallrye.mutiny.Uni;
 
 public interface BaseRepository<MODEL extends Model<ID>, ID> {
