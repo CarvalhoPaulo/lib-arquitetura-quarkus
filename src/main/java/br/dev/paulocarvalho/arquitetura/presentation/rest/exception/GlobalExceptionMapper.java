@@ -1,8 +1,8 @@
-package br.com.familyfinance.arquitetura.presentation.rest.exception;
+package br.dev.paulocarvalho.arquitetura.presentation.rest.exception;
 
-import br.com.familyfinance.arquitetura.application.dto.ErrorDTO;
-import br.com.familyfinance.arquitetura.application.dto.MetaDTO;
-import br.com.familyfinance.arquitetura.application.dto.ResponseDTO;
+import br.dev.paulocarvalho.arquitetura.application.dto.ErrorDTO;
+import br.dev.paulocarvalho.arquitetura.application.dto.MetaDTO;
+import br.dev.paulocarvalho.arquitetura.application.dto.ResponseDTO;
 import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationErrorCodeEnum;
 import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationException;
 import br.dev.paulocarvalho.arquitetura.domain.exception.BusinessException;

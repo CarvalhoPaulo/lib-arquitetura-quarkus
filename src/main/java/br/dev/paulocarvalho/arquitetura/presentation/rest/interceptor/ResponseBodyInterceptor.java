@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.presentation.rest.interceptor;
+package br.dev.paulocarvalho.arquitetura.presentation.rest.interceptor;
 
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.ext.WriterInterceptor;

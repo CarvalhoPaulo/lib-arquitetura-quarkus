@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.application.dto;
+package br.dev.paulocarvalho.arquitetura.application.dto;
 
 import java.io.Serializable;
 

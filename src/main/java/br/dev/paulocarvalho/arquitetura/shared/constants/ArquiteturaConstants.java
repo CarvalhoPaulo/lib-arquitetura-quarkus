@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.shared.constants;
+package br.dev.paulocarvalho.arquitetura.shared.constants;
 
 public class ArquiteturaConstants {
     public static final String getBasePathContext(String api, String version) {

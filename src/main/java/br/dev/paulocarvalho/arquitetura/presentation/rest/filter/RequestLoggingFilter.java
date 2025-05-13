@@ -1,4 +1,4 @@
-package br.com.familyfinance.arquitetura.presentation.rest.filter;
+package br.dev.paulocarvalho.arquitetura.presentation.rest.filter;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
