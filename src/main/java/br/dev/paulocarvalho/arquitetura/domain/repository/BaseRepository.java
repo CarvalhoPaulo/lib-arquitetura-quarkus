@@ -7,9 +7,9 @@ import io.smallrye.mutiny.Uni;
 public interface BaseRepository<MODEL extends Model<ID>, ID> {
     Uni<MODEL> buscarPorId(ID id);
 
-    Uni<MODEL> inserir(MODEL usuario) throws BusinessException;
+    Uni<MODEL> inserir(MODEL model) throws BusinessException;
 
-    Uni<MODEL> alterar(MODEL usuario);
+    Uni<MODEL> alterar(MODEL model);
 
-    Uni<Void> excluir(MODEL usuario);
+    Uni<Void> excluir(MODEL model);
 }

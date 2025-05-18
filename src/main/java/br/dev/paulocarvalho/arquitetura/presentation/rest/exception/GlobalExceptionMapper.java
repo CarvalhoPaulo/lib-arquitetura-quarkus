@@ -20,6 +20,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(Throwable exception) {
+        log.error("Application error -> ", exception);
         if (exception instanceof BusinessException) {
             return toResponse((BusinessException) exception);
         }
