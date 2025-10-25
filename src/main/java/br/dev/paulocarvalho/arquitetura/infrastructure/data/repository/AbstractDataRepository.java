@@ -17,7 +17,7 @@ public abstract class AbstractDataRepository<MODEL extends Model<ID>, DATA, ID>
     protected abstract AbstractModelMapper<MODEL, DATA> getMapper();
 
     @Override
-    public Uni<MODEL> buscarPorId(ID id) {
+    public Uni<MODEL> get(ID id) {
         return findById(id)
                 .onItem()
                 .transform(Unchecked.function(this.getMapper()::toModel));
@@ -25,7 +25,7 @@ public abstract class AbstractDataRepository<MODEL extends Model<ID>, DATA, ID>
 
     @Transactional
     @Override
-    public Uni<MODEL> inserir(MODEL model) throws BusinessException {
+    public Uni<MODEL> create(MODEL model) throws BusinessException {
         return persist(this.getMapper().toData(model))
                 .onItem()
                 .transform(Unchecked.function(this.getMapper()::toModel));
@@ -33,7 +33,7 @@ public abstract class AbstractDataRepository<MODEL extends Model<ID>, DATA, ID>
 
     @Transactional
     @Override
-    public Uni<MODEL> alterar(MODEL model) {
+    public Uni<MODEL> update(MODEL model) {
         return findById(model.getId())
                 .onItem()
                 .ifNull()
@@ -47,7 +47,7 @@ public abstract class AbstractDataRepository<MODEL extends Model<ID>, DATA, ID>
 
     @Transactional
     @Override
-    public Uni<Void> excluir(MODEL model) {
+    public Uni<Void> delete(MODEL model) {
         return findById(model.getId())
                 .onItem()
                 .transformToUni(data -> delete(data));

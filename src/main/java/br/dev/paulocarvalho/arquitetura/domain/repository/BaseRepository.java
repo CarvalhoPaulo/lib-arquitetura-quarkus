@@ -5,11 +5,11 @@ import br.dev.paulocarvalho.arquitetura.domain.model.Model;
 import io.smallrye.mutiny.Uni;
 
 public interface BaseRepository<MODEL extends Model<ID>, ID> {
-    Uni<MODEL> buscarPorId(ID id);
+    Uni<MODEL> get(ID id);
 
-    Uni<MODEL> inserir(MODEL model) throws BusinessException;
+    Uni<MODEL> create(MODEL model) throws BusinessException;
 
-    Uni<MODEL> alterar(MODEL model);
+    Uni<MODEL> update(MODEL model);
 
-    Uni<Void> excluir(MODEL model);
+    Uni<Void> delete(MODEL model);
 }
