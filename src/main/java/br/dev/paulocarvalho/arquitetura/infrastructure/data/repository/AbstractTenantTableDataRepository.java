@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-public abstract class AbstractTenantTableDataRepository<MODEL extends Model<ID>, DATA extends TenantTableData<TENANT_ID>, ID, TENANT_ID>
+public abstract class AbstractTenantTableDataRepository<MODEL extends Model<ID>, DATA extends TenantTableData<ID, TENANT_ID>, ID, TENANT_ID>
         implements PanacheRepositoryBase<DATA, ID>, TenantTableBaseRepository<MODEL, ID, TENANT_ID> {
 
     private static final String TENANT_ID_PARAMETER_NAME = "tenant";
@@ -53,7 +53,7 @@ public abstract class AbstractTenantTableDataRepository<MODEL extends Model<ID>,
         data.setTenant(tenant);
         return persist(data)
                 .onItem()
-                .transformToUni(d -> findById(model.getId()))
+                .transformToUni(d -> findById(d.getId()))
                 .onItem()
                 .transform(Unchecked.function(this.getMapper()::toModel));
     }
