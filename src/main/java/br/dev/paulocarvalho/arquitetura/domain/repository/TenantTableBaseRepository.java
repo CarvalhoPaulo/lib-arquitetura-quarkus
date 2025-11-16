@@ -1,19 +1,19 @@
 package br.dev.paulocarvalho.arquitetura.domain.repository;
 
+import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationException;
 import br.dev.paulocarvalho.arquitetura.domain.exception.BusinessException;
-import br.dev.paulocarvalho.arquitetura.domain.model.Model;
-import io.smallrye.mutiny.Uni;
+import br.dev.paulocarvalho.arquitetura.domain.entity.Entity;
 
 import java.util.List;
 
-public interface TenantTableBaseRepository<MODEL extends Model<ID>, ID, TENANT> {
-    Uni<List<MODEL>> getAll(TENANT tenant);
+public interface TenantTableBaseRepository<MODEL extends Entity<ID>, ID, TENANT> {
+    List<MODEL> getAll(TENANT tenant) throws BusinessException;
 
-    Uni<MODEL> get(TENANT tenant, ID id);
+    MODEL get(TENANT tenant, ID id) throws ApplicationException, BusinessException;
 
-    Uni<MODEL> create(TENANT tenant, MODEL model) throws BusinessException;
+    MODEL create(TENANT tenant, MODEL model) throws BusinessException;
 
-    Uni<Void> delete(TENANT tenant, MODEL model);
+    void delete(TENANT tenant, MODEL model) throws ApplicationException;
 
-    Uni<Void> delete(TENANT tenant, ID id);
+    void delete(TENANT tenant, ID id) throws ApplicationException;
 }

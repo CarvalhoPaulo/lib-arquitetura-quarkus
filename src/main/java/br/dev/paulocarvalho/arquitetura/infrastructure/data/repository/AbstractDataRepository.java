@@ -1,56 +1,53 @@
 package br.dev.paulocarvalho.arquitetura.infrastructure.data.repository;
 
-import br.dev.paulocarvalho.arquitetura.domain.exception.BusinessException;
-import br.dev.paulocarvalho.arquitetura.domain.repository.BaseRepository;
 import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationErrorCodeEnum;
 import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationException;
+import br.dev.paulocarvalho.arquitetura.domain.entity.Entity;
+import br.dev.paulocarvalho.arquitetura.domain.exception.BusinessException;
 import br.dev.paulocarvalho.arquitetura.domain.mapper.AbstractModelMapper;
-import br.dev.paulocarvalho.arquitetura.domain.model.Model;
-import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.unchecked.Unchecked;
+import br.dev.paulocarvalho.arquitetura.domain.repository.BaseRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.transaction.Transactional;
 
-public abstract class AbstractDataRepository<MODEL extends Model<ID>, DATA, ID>
+import java.util.Optional;
+
+public abstract class AbstractDataRepository<MODEL extends Entity<ID>, DATA, ID>
         implements PanacheRepositoryBase<DATA, ID>, BaseRepository<MODEL, ID> {
 
     protected abstract AbstractModelMapper<MODEL, DATA> getMapper();
 
     @Override
-    public Uni<MODEL> get(ID id) {
-        return findById(id)
-                .onItem()
-                .transform(Unchecked.function(this.getMapper()::toModel));
+    public Optional<MODEL> get(ID id) throws BusinessException {
+        Optional<DATA> data = findByIdOptional(id);
+        if (data.isPresent()) {
+            return Optional.of(getMapper().toModel(data.get()));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Transactional
     @Override
-    public Uni<MODEL> create(MODEL model) throws BusinessException {
-        return persist(this.getMapper().toData(model))
-                .onItem()
-                .transform(Unchecked.function(this.getMapper()::toModel));
+    public MODEL create(MODEL model) throws BusinessException {
+        DATA data = getMapper().toData(model);
+        persist(data);
+        return getMapper().toModel(data);
     }
 
     @Transactional
     @Override
-    public Uni<MODEL> update(MODEL model) {
-        return findById(model.getId())
-                .onItem()
-                .ifNull()
-                .failWith(() -> new ApplicationException(ApplicationErrorCodeEnum.RECURSO_NAO_ENCONTRADO))
-                .onItem()
-                .ifNotNull()
-                .transformToUni(Unchecked.function(data -> persist(this.getMapper().mergeData(model, data))))
-                .onItem()
-                .transform(Unchecked.function(this.getMapper()::toModel));
+    public MODEL update(MODEL model) throws ApplicationException, BusinessException {
+        DATA data = findByIdOptional(model.getId())
+                .orElseThrow(() -> new ApplicationException(ApplicationErrorCodeEnum.RECURSO_NAO_ENCONTRADO));
+        DATA mergedData = getMapper().mergeData(model, data);
+        persist(mergedData);
+        return getMapper().toModel(mergedData);
     }
 
     @Transactional
     @Override
-    public Uni<Void> delete(MODEL model) {
-        return findById(model.getId())
-                .onItem()
-                .transformToUni(data -> delete(data));
+    public void delete(MODEL model) {
+        deleteById(model.getId());
     }
 
 }

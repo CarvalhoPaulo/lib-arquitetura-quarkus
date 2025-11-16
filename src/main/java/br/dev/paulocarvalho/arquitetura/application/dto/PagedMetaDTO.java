@@ -1,6 +1,6 @@
 package br.dev.paulocarvalho.arquitetura.application.dto;
 
-import br.dev.paulocarvalho.arquitetura.domain.model.Page;
+import br.dev.paulocarvalho.arquitetura.domain.entity.Page;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

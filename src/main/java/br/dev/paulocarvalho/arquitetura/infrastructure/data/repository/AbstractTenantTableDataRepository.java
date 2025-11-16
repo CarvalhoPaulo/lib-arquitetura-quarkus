@@ -2,20 +2,18 @@ package br.dev.paulocarvalho.arquitetura.infrastructure.data.repository;
 
 import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationErrorCodeEnum;
 import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationException;
+import br.dev.paulocarvalho.arquitetura.domain.entity.Entity;
 import br.dev.paulocarvalho.arquitetura.domain.exception.BusinessException;
 import br.dev.paulocarvalho.arquitetura.domain.mapper.AbstractModelMapper;
-import br.dev.paulocarvalho.arquitetura.domain.model.Model;
 import br.dev.paulocarvalho.arquitetura.domain.repository.TenantTableBaseRepository;
 import br.dev.paulocarvalho.arquitetura.infrastructure.data.TenantTableData;
-import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Parameters;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.unchecked.Unchecked;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-public abstract class AbstractTenantTableDataRepository<MODEL extends Model<ID>, DATA extends TenantTableData<ID, TENANT_ID>, ID, TENANT_ID>
+public abstract class AbstractTenantTableDataRepository<MODEL extends Entity<ID>, DATA extends TenantTableData<ID, TENANT_ID>, ID, TENANT_ID>
         implements PanacheRepositoryBase<DATA, ID>, TenantTableBaseRepository<MODEL, ID, TENANT_ID> {
 
     private static final String TENANT_ID_PARAMETER_NAME = "tenant";
@@ -25,63 +23,51 @@ public abstract class AbstractTenantTableDataRepository<MODEL extends Model<ID>,
     protected abstract AbstractModelMapper<MODEL, DATA> getMapper();
 
     @Override
-    public Uni<List<MODEL>> getAll(TENANT_ID tenant) {
-        return find("tenant", tenant)
-                .list()
-                .onItem()
-                .transform(Unchecked.function(this.getMapper()::toModelList));
+    public List<MODEL> getAll(TENANT_ID tenant) throws BusinessException {
+        List<DATA> dataList = find("tenant = :tenant and active is true", Parameters.with("tenant", tenant)).list();
+        return this.getMapper().toModelList(dataList);
     }
 
     @Override
-    public Uni<MODEL> get(TENANT_ID tenant, ID id) {
-        return find(
+    public MODEL get(TENANT_ID tenant, ID id) throws ApplicationException, BusinessException {
+        DATA data = find(
                 ID_TENANT_ID_CONDITION,
                 Parameters.with("id", id).and(TENANT_ID_PARAMETER_NAME, tenant)
         )
-                .singleResult()
-                .onItem()
-                .ifNull()
-                .failWith(() -> new ApplicationException(ApplicationErrorCodeEnum.RECURSO_NAO_ENCONTRADO))
-                .onItem()
-                .transform(Unchecked.function(this.getMapper()::toModel));
+                .firstResultOptional()
+                .orElseThrow(() -> new ApplicationException(ApplicationErrorCodeEnum.RECURSO_NAO_ENCONTRADO));
+        return this.getMapper().toModel(data);
     }
 
     @Transactional
     @Override
-    public Uni<MODEL> create(TENANT_ID tenant, MODEL model) throws BusinessException {
+    public MODEL create(TENANT_ID tenant, MODEL model) throws BusinessException {
         DATA data = this.getMapper().toData(model);
         data.setTenant(tenant);
-        return persist(data)
-                .onItem()
-                .transformToUni(d -> findById(d.getId()))
-                .onItem()
-                .transform(Unchecked.function(this.getMapper()::toModel));
+        persist(data);
+        return this.getMapper().toModel(data);
     }
 
     @Transactional
     @Override
-    public Uni<Void> delete(TENANT_ID tenant, MODEL model) {
-        return delete(tenant, model.getId());
+    public void delete(TENANT_ID tenant, MODEL model) throws ApplicationException {
+        delete(tenant, model.getId());
     }
 
     @Transactional
     @Override
-    public Uni<Void> delete(TENANT_ID tenant, ID id) {
-        return find(
+    public void delete(TENANT_ID tenant, ID id) throws ApplicationException {
+        find(
                 ID_TENANT_ID_CONDITION,
                 Parameters.with("id", id).and(TENANT_ID_PARAMETER_NAME, tenant)
         )
-                .firstResult()
-                .onItem()
-                .ifNull()
-                .failWith(() -> new ApplicationException(ApplicationErrorCodeEnum.RECURSO_NAO_ENCONTRADO))
-                .onItem()
-                .transformToUni(data -> update(
-                        "active = false WHERE " + ID_TENANT_ID_CONDITION,
-                        Parameters.with("id", id).and(TENANT_ID_PARAMETER_NAME, tenant)
-                ))
-                .onItem()
-                .transformToUni(i -> Uni.createFrom().voidItem());
+                .firstResultOptional()
+                .orElseThrow(() -> new ApplicationException(ApplicationErrorCodeEnum.RECURSO_NAO_ENCONTRADO));
+
+        update(
+                "active = false WHERE " + ID_TENANT_ID_CONDITION,
+                Parameters.with("id", id).and(TENANT_ID_PARAMETER_NAME, tenant)
+        );
     }
 
 }

@@ -1,15 +1,17 @@
 package br.dev.paulocarvalho.arquitetura.domain.repository;
 
+import br.dev.paulocarvalho.arquitetura.application.exception.ApplicationException;
+import br.dev.paulocarvalho.arquitetura.domain.entity.Entity;
 import br.dev.paulocarvalho.arquitetura.domain.exception.BusinessException;
-import br.dev.paulocarvalho.arquitetura.domain.model.Model;
-import io.smallrye.mutiny.Uni;
 
-public interface BaseRepository<MODEL extends Model<ID>, ID> {
-    Uni<MODEL> get(ID id);
+import java.util.Optional;
 
-    Uni<MODEL> create(MODEL model) throws BusinessException;
+public interface BaseRepository<MODEL extends Entity<ID>, ID> {
+    Optional<MODEL> get(ID id) throws BusinessException;
 
-    Uni<MODEL> update(MODEL model);
+    MODEL create(MODEL model) throws BusinessException;
 
-    Uni<Void> delete(MODEL model);
+    MODEL update(MODEL model) throws ApplicationException, BusinessException;
+
+    void delete(MODEL model);
 }

@@ -1,4 +1,4 @@
-package br.dev.paulocarvalho.arquitetura.domain.model;
+package br.dev.paulocarvalho.arquitetura.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
